@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "521088038348",
+    "firebase_url": "https://seektutor-8cd82.firebaseio.com",
+    "project_id": "seektutor-8cd82",
+    "storage_bucket": "seektutor-8cd82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521088038348:android:940e0d706b1370e7",
+        "android_client_info": {
+          "package_name": "com.tutor.seektutor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521088038348-befccajt75322tbk1eln9m5ta6etu3ul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tutor.seektutor",
+            "certificate_hash": "fa7734f56677f3ea319837d95cad6564d25b63ef"
+          }
+        },
+        {
+          "client_id": "521088038348-q339g2p6ola2kvtf9s2olfph197taj9m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGdeqbR1HPIn6FR3YfJ2D4ZDbZlFYGZXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521088038348-q339g2p6ola2kvtf9s2olfph197taj9m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
