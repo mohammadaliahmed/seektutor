@@ -70,7 +70,7 @@ public class TutorMainActivity extends AppCompatActivity
         });
 
 
-        ArrayAdapter adapter = new ArrayAdapter(TutorMainActivity.this, android.R.layout.simple_spinner_dropdown_item, CommonUtils.subjectsList());
+        ArrayAdapter adapter = new ArrayAdapter(TutorMainActivity.this, android.R.layout.simple_spinner_dropdown_item, CommonUtils.subjectsListWithPrice());
 
 
         subject.setAdapter(adapter);

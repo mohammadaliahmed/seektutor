@@ -55,7 +55,7 @@ public class AddSubjectsToStudy extends AppCompatActivity {
         description = findViewById(R.id.description);
         update = findViewById(R.id.update);
 
-        ArrayAdapter adapter = new ArrayAdapter(AddSubjectsToStudy.this, android.R.layout.simple_spinner_dropdown_item, CommonUtils.subjectsList());
+        ArrayAdapter adapter = new ArrayAdapter(AddSubjectsToStudy.this, android.R.layout.simple_spinner_dropdown_item, CommonUtils.subjectsListWithPrice());
 
 
         subject.setAdapter(adapter);
