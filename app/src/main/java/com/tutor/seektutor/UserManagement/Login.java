@@ -56,9 +56,9 @@ public class Login extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         prefManager = new PrefManager(this);
         if (!prefManager.isFirstTimeLaunch()) {
-            if(SharedPrefs.getUserType().equalsIgnoreCase("tutor")){
+            if (SharedPrefs.getTutor() != null) {
                 launchTutorHomescreen();
-            }else {
+            } else {
                 launchHomescreen();
             }
             finish();
@@ -220,7 +220,9 @@ public class Login extends AppCompatActivity {
 
 
         finish();
-    }   private void launchTutorHomescreen() {
+    }
+
+    private void launchTutorHomescreen() {
         SharedPrefs.setIsLoggedIn("yes");
         prefManager.setFirstTimeLaunch(false);
         SharedPrefs.setUserType("tutor");

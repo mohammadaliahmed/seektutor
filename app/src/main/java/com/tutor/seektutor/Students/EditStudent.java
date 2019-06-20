@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ import com.google.firebase.storage.UploadTask;
 import com.tutor.seektutor.Models.Student;
 import com.tutor.seektutor.Models.Tutor;
 import com.tutor.seektutor.R;
+import com.tutor.seektutor.Tutor.EditTutor;
 import com.tutor.seektutor.Utils.CommonUtils;
 import com.tutor.seektutor.Utils.CompressImage;
 import com.tutor.seektutor.Utils.GifSizeFilter;
@@ -132,11 +135,17 @@ public class EditStudent extends AppCompatActivity {
                         city.setText(student.getCity());
                         age.setText(student.getAge());
                         if (student.getGender().equalsIgnoreCase("male")) {
-                            radioType.getChildAt(0).setSelected(true);
+                            ((RadioButton) radioType.getChildAt(0)).setChecked(true);
                         } else {
-                            radioType.getChildAt(1).setSelected(true);
+                            ((RadioButton) radioType.getChildAt(1)).setChecked(true);
                         }
-                        Glide.with(EditStudent.this).load(student.getPicUrl()).into(profilePic);
+                        try {
+                            Glide.with(EditStudent.this).load(student.getPicUrl()).placeholder(R.drawable.ic_profile).into(profilePic);
+
+                        } catch (IllegalArgumentException e) {
+
+                        }
+                        SharedPrefs.setStudent(student);
                     }
                 }
             }
@@ -149,7 +158,8 @@ public class EditStudent extends AppCompatActivity {
     }
 
     private void initMatisse() {
-
+        mSelected.clear();
+        imageUrl.clear();
         Matisse.from(EditStudent.this)
                 .choose(MimeType.allOf())
                 .countable(true)
@@ -277,5 +287,21 @@ public class EditStudent extends AppCompatActivity {
         }
         return true;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+
+
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

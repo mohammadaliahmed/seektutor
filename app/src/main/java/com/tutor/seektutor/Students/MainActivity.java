@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity
 
 
     DatabaseReference mDatabase;
+    private TextView navUsername,navSubtitle;
+    CircleImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,17 +101,23 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
 
-        TextView navUsername = (TextView) headerView.findViewById(R.id.name_drawer);
-        TextView navSubtitle = (TextView) headerView.findViewById(R.id.phone_drawer);
-        CircleImageView img = headerView.findViewById(R.id.imageView);
+         navUsername = (TextView) headerView.findViewById(R.id.name_drawer);
+         navSubtitle = (TextView) headerView.findViewById(R.id.phone_drawer);
+         img = headerView.findViewById(R.id.imageView);
 
-        Glide.with(MainActivity.this).load(SharedPrefs.getTutor() == null ? SharedPrefs.getStudent().getPicUrl() : SharedPrefs.getTutor().getPicUrl()).into(img);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Glide.with(MainActivity.this)
+                .load(SharedPrefs.getTutor() == null ? SharedPrefs.getStudent().getPicUrl() : SharedPrefs.getTutor().getPicUrl()).into(img);
 
         navSubtitle.setText(SharedPrefs.getTutor() == null ? SharedPrefs.getStudent().getPhone() : SharedPrefs.getTutor().getPhone());
 
         navUsername.setText(SharedPrefs.getTutor() != null ? SharedPrefs.getTutor().getName() : SharedPrefs.getStudent().getName());
     }
-
 
     private void updateFCMKey() {
         mDatabase.child("Students").child(SharedPrefs.getStudent().getUsername()).child("fcmKey").setValue(SharedPrefs.getFcmKey());

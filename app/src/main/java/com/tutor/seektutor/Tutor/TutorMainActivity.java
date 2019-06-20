@@ -45,6 +45,8 @@ public class TutorMainActivity extends AppCompatActivity
     DatabaseReference mDatabase;
     Button search;
     AutoCompleteTextView subject, location;
+    private TextView navUsername,navSubtitle;
+    CircleImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +111,16 @@ public class TutorMainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
 
-        TextView navUsername = (TextView) headerView.findViewById(R.id.name_drawer);
-        TextView navSubtitle = (TextView) headerView.findViewById(R.id.phone_drawer);
-        CircleImageView img = headerView.findViewById(R.id.imageView);
+         navUsername = (TextView) headerView.findViewById(R.id.name_drawer);
+         navSubtitle = (TextView) headerView.findViewById(R.id.phone_drawer);
+         img = headerView.findViewById(R.id.imageView);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         Glide.with(TutorMainActivity.this).load(SharedPrefs.getTutor() == null ? SharedPrefs.getStudent().getPicUrl() : SharedPrefs.getTutor().getPicUrl()).into(img);
 
         navSubtitle.setText(SharedPrefs.getTutor() == null ? SharedPrefs.getStudent().getPhone() : SharedPrefs.getTutor().getPhone());

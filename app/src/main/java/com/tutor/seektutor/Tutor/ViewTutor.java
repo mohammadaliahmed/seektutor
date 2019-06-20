@@ -34,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -155,7 +156,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                     sendRatingToDb(rating);
                     if (tutor.getRating() != 0) {
                         float abc = 0;
-                        abc = ((rating + tutor.getRating()) / 2);
+                        abc = ((rating + tutor.getRating()) / (tutor.getRatingCount() + 1));
                         updateRating(abc);
                     } else {
 
@@ -180,7 +181,10 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
     }
 
     private void updateRating(float rating) {
-        mDatabase.child("Tutors").child(tutorId).child("rating").setValue(rating).addOnSuccessListener(new OnSuccessListener<Void>() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("rating", rating);
+        map.put("ratingCount", tutor.getRatingCount() + 1);
+        mDatabase.child("Tutors").child(tutorId).updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 List<String> abc = iMStudent.getRatedTutors();
@@ -394,7 +398,11 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                     tutor = dataSnapshot.getValue(Tutor.class);
                     if (tutor != null) {
                         if (!tutor.getPicUrl().equalsIgnoreCase("")) {
-                            Glide.with(ViewTutor.this).load(tutor.getPicUrl()).into(image);
+                            try {
+                                Glide.with(ViewTutor.this).load(tutor.getPicUrl()).into(image);
+                            } catch (IllegalArgumentException e) {
+
+                            }
                         }
                         userName.setText(tutor.getName());
                         name.setText(tutor.getName());

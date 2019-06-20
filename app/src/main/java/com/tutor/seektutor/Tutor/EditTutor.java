@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatRatingBar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +66,7 @@ public class EditTutor extends AppCompatActivity {
     StorageReference mStorageRef;
     private Uri downloadUrl;
     Tutor tutor;
+    AppCompatRatingBar rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,7 @@ public class EditTutor extends AppCompatActivity {
         age = findViewById(R.id.age);
         radioType = findViewById(R.id.radioType);
         profilePic = findViewById(R.id.profilePic);
+        rating = findViewById(R.id.rating);
         city = findViewById(R.id.city);
 
         profilePic.setOnClickListener(new View.OnClickListener() {
@@ -134,11 +139,19 @@ public class EditTutor extends AppCompatActivity {
                         city.setText(tutor.getCity());
                         age.setText(tutor.getAge());
                         if (tutor.getGender().equalsIgnoreCase("male")) {
-                            radioType.getChildAt(0).setSelected(true);
+                            ((RadioButton) radioType.getChildAt(0)).setChecked(true);
                         } else {
-                            radioType.getChildAt(1).setSelected(true);
+                            ((RadioButton) radioType.getChildAt(1)).setChecked(true);
                         }
-                        Glide.with(EditTutor.this).load(tutor.getPicUrl()).into(profilePic);
+                        try {
+                            Glide.with(EditTutor.this).load(tutor.getPicUrl()).placeholder(R.drawable.ic_profile).into(profilePic);
+
+                        } catch (IllegalArgumentException e) {
+
+                        }
+                        rating.setRating(tutor.getRating());
+                        rating.setEnabled(false);
+                        SharedPrefs.setTutor(tutor);
                     }
                 }
             }
@@ -151,7 +164,8 @@ public class EditTutor extends AppCompatActivity {
     }
 
     private void initMatisse() {
-
+        mSelected.clear();
+        imageUrl.clear();
         Matisse.from(EditTutor.this)
                 .choose(MimeType.allOf())
                 .countable(true)
@@ -279,5 +293,21 @@ public class EditTutor extends AppCompatActivity {
         }
         return true;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+
+
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

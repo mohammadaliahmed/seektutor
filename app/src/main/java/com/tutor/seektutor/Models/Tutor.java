@@ -7,6 +7,7 @@ public class Tutor {
     String username,name,password,phone,address,city,age,gender,fcmKey,picUrl;
     long time;
     float rating;
+    float ratingCount;
 
     List<String> confirmFriends=new ArrayList<>();
     List<String> requestSent=new ArrayList<>();
@@ -25,6 +26,14 @@ public class Tutor {
         this.fcmKey = fcmKey;
         this.picUrl = picUrl;
         this.time = time;
+    }
+
+    public float getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(float ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public String getCity() {

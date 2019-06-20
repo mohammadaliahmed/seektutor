@@ -138,7 +138,8 @@ public class RegisterStudent extends AppCompatActivity {
     }
 
     private void initMatisse() {
-
+        mSelected.clear();
+        imageUrl.clear();
         Matisse.from(RegisterStudent.this)
                 .choose(MimeType.allOf())
                 .countable(true)
