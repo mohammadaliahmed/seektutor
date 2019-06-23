@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.tutor.seektutor.Models.Student;
 import com.tutor.seektutor.R;
 import com.tutor.seektutor.Tutor.SubjectToTeachModel;
 import com.tutor.seektutor.Utils.CommonUtils;
@@ -28,11 +29,18 @@ public class AddSubjectsToStudy extends AppCompatActivity {
     DatabaseReference mDatabase;
     Button update;
     AutoCompleteTextView subject;
-    EditText  description;
-    ArrayList subjectList = new ArrayList<>();
+    EditText description;
+    ArrayList<String> subjectList = new ArrayList<>();
 
     String id;
     Button delete;
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +58,11 @@ public class AddSubjectsToStudy extends AppCompatActivity {
             id = mDatabase.push().getKey();
         }
 
+        for (SubjectToStudyModel m : StudentProfile.subjectToStudyList) {
+            subjectList.add(m.getSubject());
+        }
+
+
         delete = findViewById(R.id.delete);
         subject = findViewById(R.id.subject);
         description = findViewById(R.id.description);
@@ -64,25 +77,31 @@ public class AddSubjectsToStudy extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubjectToStudyModel model = new SubjectToStudyModel(
-                        id,
-                        subject.getText().toString(),
-                        description.getText().toString(),
-                        SharedPrefs.getStudent().getName(),
-                        SharedPrefs.getStudent().getPicUrl(),
-                        SharedPrefs.getStudent().getUsername(),
-                        SharedPrefs.getStudent().getCity()
-                );
+                if (subjectList.contains(subject.getText().toString())) {
+                    CommonUtils.showToast("Already Exits");
+                } else {
 
-                mDatabase.child("SubjectsToStudy").child(id).setValue(model)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                CommonUtils.showToast("Updated");
-                                mDatabase.child("Students").child(SharedPrefs.getStudent().getUsername()).child("subjectsToStudy")
-                                        .child(id).setValue(id);
-                            }
-                        });
+
+                    SubjectToStudyModel model = new SubjectToStudyModel(
+                            id,
+                            subject.getText().toString(),
+                            description.getText().toString(),
+                            SharedPrefs.getStudent().getName(),
+                            SharedPrefs.getStudent().getPicUrl(),
+                            SharedPrefs.getStudent().getUsername(),
+                            SharedPrefs.getStudent().getCity()
+                    );
+
+                    mDatabase.child("SubjectsToStudy").child(id).setValue(model)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    CommonUtils.showToast("Updated");
+                                    mDatabase.child("Students").child(SharedPrefs.getStudent().getUsername()).child("subjectsToStudy")
+                                            .child(id).setValue(id);
+                                }
+                            });
+                }
             }
         });
 

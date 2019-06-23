@@ -120,8 +120,8 @@ public class ViewStudent extends AppCompatActivity implements NotificationObserv
                         .setValue(iMTutor.getRequestSent()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        CommonUtils.showToast("Request Sent");
-                        addAsFriend.setText("Request sent");
+                        CommonUtils.showToast("tuition Requested");
+                        addAsFriend.setText("tuition Requested");
                         addAsFriend.setEnabled(false);
                         addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorGrey));
                         sendNewFriendRequestNotification();
@@ -153,7 +153,7 @@ public class ViewStudent extends AppCompatActivity implements NotificationObserv
     private void sendNewFriendRequestNotification() {
         NotificationAsync notificationAsync = new NotificationAsync(ViewStudent.this);
 //                        String NotificationTitle = "New message in " + groupName;
-        String NotificationTitle = "New friend request from " + SharedPrefs.getTutor().getName();
+        String NotificationTitle = "New tuition request from " + SharedPrefs.getTutor().getName();
         String NotificationMessage = "Click to view ";
 
         notificationAsync.execute("ali", student.getFcmKey(), NotificationTitle, NotificationMessage,
@@ -166,7 +166,7 @@ public class ViewStudent extends AppCompatActivity implements NotificationObserv
                 student.getUsername(),
                 SharedPrefs.getTutor().getUsername(),
                 SharedPrefs.getTutor().getPicUrl(),
-                SharedPrefs.getTutor().getName() + " sent you friend request",
+                SharedPrefs.getTutor().getName() + " sent you tuition request",
                 "newRequest",
                 System.currentTimeMillis()
         );
@@ -208,7 +208,7 @@ public class ViewStudent extends AppCompatActivity implements NotificationObserv
     private void sendAcceptRequestNotification() {
         NotificationAsync notificationAsync = new NotificationAsync(ViewStudent.this);
 //                        String NotificationTitle = "New message in " + groupName;
-        String NotificationTitle = SharedPrefs.getTutor().getName() + " accepted your friend request";
+        String NotificationTitle = SharedPrefs.getTutor().getName() + " accepted your tuition request";
         String NotificationMessage = "Click to view ";
 
         notificationAsync.execute("ali", student.getFcmKey(), NotificationTitle, NotificationMessage,
@@ -219,7 +219,7 @@ public class ViewStudent extends AppCompatActivity implements NotificationObserv
                 student.getUsername(),
                 SharedPrefs.getTutor().getUsername(),
                 SharedPrefs.getTutor().getPicUrl(),
-                SharedPrefs.getTutor().getName() + " accepted your friend request",
+                SharedPrefs.getTutor().getName() + " accepted your tuition request",
                 "requestAccept",
                 System.currentTimeMillis()
         );
@@ -236,7 +236,7 @@ public class ViewStudent extends AppCompatActivity implements NotificationObserv
                     iMTutor = dataSnapshot.getValue(Student.class);
                     if (iMTutor != null) {
                         if (iMTutor.getRequestSent().contains(studentId)) {
-                            addAsFriend.setText("Request sent");
+                            addAsFriend.setText("tuition Requested");
                             addAsFriend.setEnabled(false);
                             addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorGrey));
                             abc = 1;
@@ -247,12 +247,12 @@ public class ViewStudent extends AppCompatActivity implements NotificationObserv
                             addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                         } else if (iMTutor.getConfirmFriends().contains(studentId)) {
                             abc = 3;
-                            addAsFriend.setText("Unfriend");
+                            addAsFriend.setText("End tuition");
                             addAsFriend.setEnabled(true);
                             addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorRed));
                         } else {
                             abc = 0;
-                            addAsFriend.setText("Add as Friend");
+                            addAsFriend.setText("Request tuition");
                             addAsFriend.setEnabled(true);
                             addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                         }

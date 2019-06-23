@@ -20,7 +20,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="12dp"
         android:layout_toRightOf="@id/subject"
-        android:text="Exper"
+        android:text=""
         android:textSize="12sp" />
 
     <TextView

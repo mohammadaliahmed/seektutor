@@ -1,6 +1,8 @@
 package com.tutor.seektutor.Tutor;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -63,6 +65,8 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
     SubjectsToTeachListAdapter adapter3;
     LinearLayout ratingLayout;
 
+    ImageView phone, sms;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,8 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
             window.setStatusBarColor(Color.TRANSPARENT);
         }
         tutorId = getIntent().getStringExtra("tutorId");
+        sms = findViewById(R.id.sms);
+        phone = findViewById(R.id.phone);
         name = findViewById(R.id.name);
         userName = findViewById(R.id.userName);
         image = findViewById(R.id.userPic);
@@ -92,6 +98,23 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
         subjectsToTeach = findViewById(R.id.recyclerviewTeach);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + tutor.getPhone()));
+                startActivity(i);
+            }
+        });
+        sms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + tutor.getPhone()));
+                startActivity(i);
+            }
+        });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +179,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                     sendRatingToDb(rating);
                     if (tutor.getRating() != 0) {
                         float abc = 0;
-                        abc = ((rating + tutor.getRating()) / (tutor.getRatingCount() + 1));
+                        abc = ((rating + tutor.getRating()) / (2));
                         updateRating(abc);
                     } else {
 
@@ -200,6 +223,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                 });
             }
         });
+
     }
 
     private void sendFriendRequest() {
@@ -213,8 +237,8 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                         .setValue(iMStudent.getRequestSent()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        CommonUtils.showToast("Request Sent");
-                        addAsFriend.setText("Request sent");
+                        CommonUtils.showToast("tuition Requested");
+                        addAsFriend.setText("tuition Requested");
                         addAsFriend.setEnabled(false);
                         addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorGrey));
                         sendNewFriendRequestNotification();
@@ -246,7 +270,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
     private void sendNewFriendRequestNotification() {
         NotificationAsync notificationAsync = new NotificationAsync(ViewTutor.this);
 //                        String NotificationTitle = "New message in " + groupName;
-        String NotificationTitle = "New friend request from " + SharedPrefs.getStudent().getName();
+        String NotificationTitle = "New tuition request from " + SharedPrefs.getStudent().getName();
         String NotificationMessage = "Click to view ";
 
         notificationAsync.execute("ali", tutor.getFcmKey(), NotificationTitle, NotificationMessage,
@@ -256,7 +280,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                 key, tutor.getUsername(),
                 SharedPrefs.getStudent().getUsername(),
                 SharedPrefs.getStudent().getPicUrl(),
-                SharedPrefs.getStudent().getName() + " sent you friend request",
+                SharedPrefs.getStudent().getName() + " sent you tuition request",
                 "newRequest",
                 System.currentTimeMillis()
         );
@@ -298,7 +322,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
     private void sendAcceptRequestNotification() {
         NotificationAsync notificationAsync = new NotificationAsync(ViewTutor.this);
 //                        String NotificationTitle = "New message in " + groupName;
-        String NotificationTitle = SharedPrefs.getStudent().getName() + " accepted your friend request";
+        String NotificationTitle = SharedPrefs.getStudent().getName() + " accepted your tuition request";
         String NotificationMessage = "Click to view ";
 
         notificationAsync.execute("ali", tutor.getFcmKey(), NotificationTitle, NotificationMessage,
@@ -308,7 +332,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                 key, tutor.getUsername(),
                 SharedPrefs.getStudent().getUsername(),
                 SharedPrefs.getStudent().getPicUrl(),
-                SharedPrefs.getStudent().getName() + " accepted your friend request",
+                SharedPrefs.getStudent().getName() + " accepted your tuition request",
                 "requestAccept",
                 System.currentTimeMillis()
         );
@@ -327,7 +351,7 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                         ratingLayout.setVisibility(View.GONE);
 
                         if (iMStudent.getRequestSent().contains(tutorId)) {
-                            addAsFriend.setText("Request sent");
+                            addAsFriend.setText("Tuition requested");
                             addAsFriend.setEnabled(false);
                             addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorGrey));
                             abc = 1;
@@ -340,21 +364,21 @@ public class ViewTutor extends AppCompatActivity implements NotificationObserver
                             ratingLayout.setVisibility(View.VISIBLE);
                             mobile.setText(tutor.getPhone());
                             abc = 3;
-                            addAsFriend.setText("Unfriend");
+                            addAsFriend.setText("End tuition");
                             addAsFriend.setEnabled(true);
                             addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorRed));
                         } else {
 
                             abc = 0;
-                            addAsFriend.setText("Add as Friend");
+                            addAsFriend.setText("Request tuition");
                             addAsFriend.setEnabled(true);
                             addAsFriend.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                         }
 
-                        if (iMStudent.getRatedTutors().contains(tutorId)) {
-                            rating.setEnabled(false);
-//                            rating.setFocusable(false);
-                        }
+//                        if (iMStudent.getRatedTutors().contains(tutorId)) {
+//                            rating.setEnabled(false);
+////                            rating.setFocusable(false);
+//                        }
 
 
                     }

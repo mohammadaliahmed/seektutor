@@ -63,7 +63,8 @@ public class TutorsList extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         SubjectToTeachModel tutor = snapshot.getValue(SubjectToTeachModel.class);
                         if (tutor != null) {
-                            if (tutor.getSubject().contains(subject) && tutor.getLocation().contains(location)) {
+                            if (tutor.getSubject().toLowerCase().contains(subject)
+                                    && tutor.getLocation().toLowerCase().contains(location)) {
                                 itemList.add(tutor);
                             }
                         }

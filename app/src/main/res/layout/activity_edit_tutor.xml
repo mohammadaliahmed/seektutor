@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/abc"
-            android:layout_marginTop="50dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -216,6 +215,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:text="Average Rating" />
@@ -223,6 +223,7 @@
             <android.support.v7.widget.AppCompatRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:id="@+id/rating"
                 android:layout_gravity="center" />
 

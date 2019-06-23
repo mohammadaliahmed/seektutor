@@ -40,8 +40,10 @@
         <activity android:name="com.tutor.seektutor.Students.MyRatings" />
         <activity android:name="com.tutor.seektutor.Students.StudentContactSelectionScreen" />
         <activity android:name=".Tutor.EditTutor" />
-        <activity android:name=".Students.StudentProfile" />
-        <activity android:name=".Tutor.TutorProfile" />
+        <activity android:name=".Students.StudentProfile"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Tutor.TutorProfile"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Students.EditStudent" />
         <activity android:name="com.tutor.seektutor.Tutor.TutorContactSelectionScreen" />
         <activity

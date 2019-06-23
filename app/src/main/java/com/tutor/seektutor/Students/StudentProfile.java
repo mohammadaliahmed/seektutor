@@ -1,6 +1,8 @@
 package com.tutor.seektutor.Students;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,28 +10,42 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tutor.seektutor.Models.Student;
 import com.tutor.seektutor.R;
+import com.tutor.seektutor.Tutor.TutorProfile;
 import com.tutor.seektutor.Utils.CommonUtils;
 import com.tutor.seektutor.Utils.SharedPrefs;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class StudentProfile extends AppCompatActivity {
 
     SubjectsToStudyListAdapter adapter1;
-    ArrayList<SubjectToStudyModel> subjectToStudyList = new ArrayList<>();
+    public static ArrayList<SubjectToStudyModel> subjectToStudyList = new ArrayList<>();
     Button addSubjectToStudy;
     RecyclerView subjectsToStudy;
 
     DatabaseReference mDatabase;
+
+
+    ImageView back;
+    CircleImageView userPic;
+    TextView userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +56,33 @@ public class StudentProfile extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         this.setTitle("Profile");
-
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
         subjectsToStudy = findViewById(R.id.subjectsToStudy);
         addSubjectToStudy = findViewById(R.id.addSubjectToStudy);
+
+        userName = findViewById(R.id.userName);
+        userPic = findViewById(R.id.userPic);
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         subjectsToStudy.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter1 = new SubjectsToStudyListAdapter(this, subjectToStudyList);
         subjectsToStudy.setAdapter(adapter1);
-        getDataFromDB();
+//        getDataFromDB();
 
 
         addSubjectToStudy.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +92,12 @@ public class StudentProfile extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDataFromDB();
     }
 
     private void getDataFromDB() {
@@ -73,6 +113,9 @@ public class StudentProfile extends AppCompatActivity {
                             getSubjectsFromDb(id);
                         }
                     }
+                    Student student = dataSnapshot.getValue(Student.class);
+                    userName.setText(student.getName());
+                    Glide.with(StudentProfile.this).load(student.getPicUrl()).into(userPic);
                 }
             }
 

@@ -110,6 +110,8 @@ public class RegisterTutor extends AppCompatActivity {
                     password.setError("Please enter your password");
                 } else if (phone.getText().toString().length() == 0) {
                     phone.setError("Please enter your phone");
+                } else if (phone.getText().length() < 11) {
+                    phone.setError("Please enter correct phone");
                 } else if (address.getText().toString().length() == 0) {
                     address.setError("Please enter address");
                 } else if (city.getText().toString().length() == 0) {

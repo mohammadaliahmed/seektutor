@@ -400,6 +400,27 @@
                             android:lines="1"
                             android:text="" />
 
+                        <ImageView
+                            android:id="@+id/phone"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@id/sms"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_phone" />
+
+                        <ImageView
+                            android:id="@+id/sms"
+                            android:layout_width="30dp"
+
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_sms" />
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -453,23 +474,8 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
-        android:weightSum="2.01">
+        android:weightSum="1">
 
-        <Button
-            android:id="@+id/startChat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:inputType="text"
-            android:text="Start chat"
-            android:textColor="#fff" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="0.01"
-            android:background="#fff" />
 
         <Button
             android:id="@+id/addAsFriend"
@@ -478,7 +484,7 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:inputType="text"
-            android:text="Add As Friend"
+            android:text="Request tuition"
             android:textColor="#fff" />
     </LinearLayout>
 

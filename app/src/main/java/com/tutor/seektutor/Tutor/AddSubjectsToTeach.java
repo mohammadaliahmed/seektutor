@@ -31,6 +31,12 @@ public class AddSubjectsToTeach extends AppCompatActivity {
     ArrayList subjectList = new ArrayList<>();
     Button delete;
     String id;
+    ArrayList<String> subjects = new ArrayList<>();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,10 @@ public class AddSubjectsToTeach extends AppCompatActivity {
         description = findViewById(R.id.description);
         update = findViewById(R.id.update);
 
+        for (SubjectToTeachModel model : TutorProfile.subjectsToTeachList) {
+            subjects.add(model.getSubject());
+        }
+
         ArrayAdapter adapter = new ArrayAdapter(AddSubjectsToTeach.this, android.R.layout.simple_spinner_dropdown_item, CommonUtils.subjectsListWithPrice());
 
 
@@ -63,26 +73,30 @@ public class AddSubjectsToTeach extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SubjectToTeachModel model = new SubjectToTeachModel(
-                        id,
-                        subject.getText().toString(),
+                if (subjects.contains(subject.getText().toString())) {
+                    CommonUtils.showToast("Already exists");
+                } else {
+                    SubjectToTeachModel model = new SubjectToTeachModel(
+                            id,
+                            subject.getText().toString(),
 
-                        description.getText().toString(),
-                        SharedPrefs.getTutor().getName(),
-                        SharedPrefs.getTutor().getPicUrl(),
-                        SharedPrefs.getTutor().getUsername(),
-                        SharedPrefs.getTutor().getCity()
-                );
+                            description.getText().toString(),
+                            SharedPrefs.getTutor().getName(),
+                            SharedPrefs.getTutor().getPicUrl(),
+                            SharedPrefs.getTutor().getUsername(),
+                            SharedPrefs.getTutor().getCity()
+                    );
 
-                mDatabase.child("SubjectsToTeach").child(id).setValue(model)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                CommonUtils.showToast("Updated");
-                                mDatabase.child("Tutors").child(SharedPrefs.getTutor().getUsername()).child("subjectsToTeach")
-                                        .child(id).setValue(id);
-                            }
-                        });
+                    mDatabase.child("SubjectsToTeach").child(id).setValue(model)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    CommonUtils.showToast("Updated");
+                                    mDatabase.child("Tutors").child(SharedPrefs.getTutor().getUsername()).child("subjectsToTeach")
+                                            .child(id).setValue(id);
+                                }
+                            });
+                }
             }
         });
 

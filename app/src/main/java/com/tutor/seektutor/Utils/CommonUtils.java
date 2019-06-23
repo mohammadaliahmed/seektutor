@@ -79,6 +79,11 @@ public class CommonUtils {
         subjectList.add("Maths Olevels-Rs 3000");
         subjectList.add("Maths Alevels-Rs 4000");
         subjectList.add("English-Rs 1200");
+        subjectList.add("Chemistry-Rs 1200");
+        subjectList.add("Urdu-Rs 900");
+        subjectList.add("Urdu-Rs 900");
+        subjectList.add("Urdu-Rs 900");
+        subjectList.add("Urdu-Rs 900");
         subjectList.add("Urdu-Rs 900");
         return subjectList;
     }
